@@ -29,6 +29,8 @@ public class DetailMovieActivity extends AppCompatActivity {
     private TextView tvAudienceScore;
     private TextView tvCriticsScore;
     private TextView tvCriticsConsensus;
+    public static final String MOVIE_DETAIL_KEY = "movie";
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +47,7 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvAudienceScore =  (TextView) findViewById(R.id.tvAudienceScore);
         tvCriticsScore = (TextView) findViewById(R.id.tvCriticsScore);
         // Load movie data
-        Movie movie = (Movie) getIntent().getSerializableExtra(AllMoviesActivity.MOVIE_DETAIL_KEY);
+        movie = (Movie) getIntent().getSerializableExtra(AllMoviesActivity.MOVIE_DETAIL_KEY);
         loadMovie(movie);
     }
 
@@ -57,9 +59,8 @@ public class DetailMovieActivity extends AppCompatActivity {
         tvTitle.setText(movie.getTitle());
         tvCriticsScore.setText(Html.fromHtml("<b>Critics Score:</b> " + movie.getCriticsScore() + "%"));
         tvAudienceScore.setText(Html.fromHtml("<b>Audience Score:</b> " + movie.getAudienceScore() + "%"));
-        tvCast.setText(movie.getCastList());
+      //  tvCast.setText(movie.getCastList());
         tvSynopsis.setText(Html.fromHtml("<b>Synopsis:</b> " + movie.getSynopsis()));
-        tvCriticsConsensus.setText(Html.fromHtml("<b>Consensus:</b> " + movie.getCriticsConsensus()));
         // R.drawable.large_movie_poster from
         // http://content8.flixster.com/movie/11/15/86/11158674_pro.jpg -->
         Picasso.with(this).load(movie.getLargePosterUrl()).
@@ -73,8 +74,19 @@ public class DetailMovieActivity extends AppCompatActivity {
 
         if (CurrentUser.getId() == null) {
             Intent i = new Intent(this, LoginActivity.class);
+            i.putExtra(MOVIE_DETAIL_KEY, movie);
             startActivity(i);
            return;
+        }
+        else {
+            try {
+                cupboard().withDatabase(db).put(movie);
+            }   catch (Exception e) {
+                Toast toast = Toast.makeText(getApplicationContext(), e.toString(),Toast.LENGTH_LONG);
+                toast.show();
+            }
+            Intent i = new Intent(this, MyWatchListActivity.class);
+            startActivity(i);
         }
 
         Toast toast = Toast.makeText(getApplicationContext(), "At END!", Toast.LENGTH_LONG);

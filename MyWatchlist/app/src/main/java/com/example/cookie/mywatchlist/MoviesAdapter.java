@@ -35,7 +35,7 @@ public class MoviesAdapter extends ArrayAdapter<Movie> {
 
         tvTitle.setText(movie.getTitle());
         tvCriticsScore.setText("Score: " + movie.getCriticsScore() + "%");
-        tvCast.setText(movie.getCastList());
+        //tvCast.setText(movie.getCastList());
         Picasso.with(getContext()).load(movie.getPosterUrl()).into(ivPosterImage);
 
         return convertView;

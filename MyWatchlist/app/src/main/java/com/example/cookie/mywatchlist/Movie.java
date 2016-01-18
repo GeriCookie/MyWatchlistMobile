@@ -16,51 +16,80 @@ public class Movie implements Serializable {
 
     private static final long serialVersionUID = -8959832007991513854L;
     private String title;
-    private int year;
+    private String year;
     private String synopsis;
     private String posterUrl;
     private String largePosterUrl;
-    private String criticsConsensus;
     private int audienceScore;
-
+    private Long _id;
     private int criticsScore;
-    private ArrayList<String> castList;
+//    private ArrayList<String> castList;
 
+    public Movie(){
+
+    }
 
     public String getTitle() {
         return title;
     }
 
-    public int getYear() {
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getYear() {
         return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public String getSynopsis() {
         return synopsis;
     }
 
+    public void setSynopsis(String synopsis) {
+        this.synopsis = synopsis;
+    }
+
+
     public String getPosterUrl() {
         return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public int getCriticsScore() {
         return criticsScore;
     }
 
-    public String getCastList() {
-        return TextUtils.join(", ", castList);
+    public void setCriticsScore(int criticsScore) {
+        this.criticsScore = criticsScore;
     }
+
+
+//    public String getCastList() {
+//        return TextUtils.join(", ", castList);
+//    }
+
 
     public String getLargePosterUrl() {
         return largePosterUrl;
     }
 
-    public String getCriticsConsensus() {
-        return criticsConsensus;
+    public void setLargePosterUrl(String largePosterUrl) {
+        this.largePosterUrl = largePosterUrl;
     }
 
     public int getAudienceScore() {
         return audienceScore;
+    }
+
+    public void setAudienceScore(int audienceScore) {
+        this.audienceScore = audienceScore;
     }
 
 
@@ -69,20 +98,19 @@ public class Movie implements Serializable {
 
         try {
             movie.title = jsonObject.getString("title");
-            movie.year = jsonObject.getInt("year");
+            movie.year = jsonObject.getString("theaterReleaseDate");
             movie.synopsis = jsonObject.getString("synopsis");
-            movie.posterUrl = jsonObject.getJSONObject("posters").getString("thumbnail");
-            movie.largePosterUrl = jsonObject.getJSONObject("posters").getString("detailed");
-            movie.criticsConsensus = jsonObject.getString("critics_consensus");
-            movie.criticsScore = jsonObject.getJSONObject("ratings").getInt("critics_score");
-            movie.audienceScore = jsonObject.getJSONObject("ratings").getInt("audience_score");
-            // Construct simple array of cast names
-            movie.castList = new ArrayList<String>();
-            JSONArray abridgedCast = jsonObject.getJSONArray("abridged_cast");
-            for (int i = 0; i < abridgedCast.length(); i++) {
-                movie.castList.add(abridgedCast.getJSONObject(i).getString("name"));
-            }
-        } catch (JSONException e) {
+            movie.posterUrl = jsonObject.getJSONObject("posters").getString("primary");
+            movie.largePosterUrl = jsonObject.getJSONObject("posters").getString("secondary");
+            movie.criticsScore = jsonObject.getInt("tomatoScore");
+            movie.audienceScore = jsonObject.getInt("popcornScore");
+
+//            movie.castList = new ArrayList<String>();
+//            JSONArray abridgedCast = jsonObject.getJSONArray("actors");
+//            for (int i = 0; i < abridgedCast.length(); i++) {
+//                movie.castList.add(abridgedCast.getString(i));
+//            }
+       } catch (JSONException e) {
             e.printStackTrace();
             return null;
         }

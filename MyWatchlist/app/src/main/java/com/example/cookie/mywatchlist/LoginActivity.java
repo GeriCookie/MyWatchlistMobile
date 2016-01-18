@@ -18,18 +18,22 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public class LoginActivity extends AppCompatActivity {
 
     SQLiteDatabase db;
+    public static final String MOVIE_DETAIL_KEY = "movie";
+    private Movie movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login2);
 
+        movie = (Movie) getIntent().getSerializableExtra(DetailMovieActivity.MOVIE_DETAIL_KEY);
+
         PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
         db = dbHelper.getWritableDatabase();
     }
 
     public void loginUser(View view) {
-        Intent intent = new Intent(this, AllMoviesActivity.class);
+        Intent intent = new Intent(this, DetailMovieActivity.class);
 
         EditText loginText = (EditText) findViewById(R.id.login_name_text);
         EditText passwordText = (EditText) findViewById(R.id.login_password_text);
@@ -52,11 +56,12 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         cacheUserId(user._id);
+        intent.putExtra(MOVIE_DETAIL_KEY,movie);
         startActivity(intent);
     }
 
     public void registerUser(View view) {
-        Intent intent = new Intent(this, AllMoviesActivity.class);
+        Intent intent = new Intent(this, DetailMovieActivity.class);
 
         EditText loginText = (EditText) findViewById(R.id.login_name_text);
         EditText passwordText = (EditText) findViewById(R.id.login_password_text);
@@ -69,7 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         try {
             user = cupboard().withDatabase(db).query(User.class).withSelection("name = ?", username).get();
         } catch (Exception e) {
-            Toast toast = Toast.makeText(getApplicationContext(), "User doesnt exist :)", Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "User doesn't exist :)", Toast.LENGTH_LONG);
             toast.show();
         }
 
@@ -81,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
 
         Long id = cupboard().withDatabase(db).put(new User(username, password));
         cacheUserId(id);
-
+        intent.putExtra(MOVIE_DETAIL_KEY,movie);
         startActivity(intent);
     }
 

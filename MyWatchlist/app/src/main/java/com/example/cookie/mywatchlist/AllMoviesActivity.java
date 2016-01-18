@@ -35,7 +35,7 @@ import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 public class AllMoviesActivity extends Activity {
     private ListView lvMovies;
     private MoviesAdapter adapterMovies;
-    private RottenTomatoesClient client;
+    private MoviesClient client;
     public static final String MOVIE_DETAIL_KEY = "movie";
 
     @Override
@@ -66,21 +66,18 @@ public class AllMoviesActivity extends Activity {
 
     private void fetchBoxOfficeMovies() {
         System.out.println("HERE!!!");
-        client = new RottenTomatoesClient();
-        client.getBoxOfficeMovies(new JsonHttpResponseHandler() {
+        client = new MoviesClient();
+        client.getAllMovies(new JsonHttpResponseHandler() {
             @Override
 
             public void onSuccess(int statusCode, Header[] headers, JSONObject body) {
                 JSONArray items = null;
                 System.out.println("HERE!!!");
                 try {
-                    // Get the movies json array
-                    items = body.getJSONArray("movies");
+                    items = body.getJSONArray("results");
 
-                    // Parse json array into array of model objects
                     ArrayList<Movie> movies = Movie.fromJson(items);
 
-                    // Load model objects into the adapter which displays them
                     adapterMovies.addAll(movies);
                 } catch (JSONException e) {
                     e.printStackTrace();

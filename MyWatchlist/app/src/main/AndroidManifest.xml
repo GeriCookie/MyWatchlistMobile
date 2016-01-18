@@ -24,7 +24,11 @@
             android:name=".DetailMovieActivity"
             android:label="@string/title_activity_detail_movie"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".LoginActivity" />
+        <activity
+            android:name=".MyWatchListActivity"
+            android:label="@string/title_activity_my_watch_list"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
