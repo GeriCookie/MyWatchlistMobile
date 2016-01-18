@@ -4,7 +4,7 @@
     <ImageView
         android:id="@+id/ivPosterImage"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="90dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:maxHeight="93dp"

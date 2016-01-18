@@ -16,6 +16,7 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import android.widget.ListView;
 
+import com.example.cookie.mywatchlist.Helpers.PracticeDatabaseHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -36,6 +37,7 @@ public class AllMoviesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_movies);
+        PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
         lvMovies = (ListView) findViewById(R.id.lvMovies);
         ArrayList<Movie> aMovies = new ArrayList<Movie>();
         adapterMovies = new MoviesAdapter(this, aMovies);

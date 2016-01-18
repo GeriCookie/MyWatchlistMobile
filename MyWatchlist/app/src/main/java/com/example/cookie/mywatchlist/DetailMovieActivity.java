@@ -1,5 +1,7 @@
 package com.example.cookie.mywatchlist;
 
+import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,8 +11,14 @@ import android.text.Html;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.cookie.mywatchlist.DBModels.LoggedUser;
+import com.example.cookie.mywatchlist.DBModels.User;
+import com.example.cookie.mywatchlist.Helpers.PracticeDatabaseHelper;
 import com.squareup.picasso.Picasso;
+
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class DetailMovieActivity extends AppCompatActivity {
     private ImageView ivPosterImage;
@@ -27,15 +35,6 @@ public class DetailMovieActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_movie);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         ivPosterImage = (ImageView) findViewById(R.id.ivPosterImage);
         tvTitle = (TextView) findViewById(R.id.tvTitle);
@@ -68,4 +67,27 @@ public class DetailMovieActivity extends AppCompatActivity {
 
     }
 
+    public void addMovie(View view) {
+        PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        LoggedUser loggedUser = null;
+
+        try {
+            loggedUser = cupboard().withDatabase(db).query(LoggedUser.class).get();
+        } catch (Exception e) {
+
+        }
+
+        if (loggedUser == null) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Asd", Toast.LENGTH_LONG);
+            toast.show();
+            Intent i = new Intent(this, LoginActivity.class);
+            startActivity(i);
+           return;
+        }
+
+        Toast toast = Toast.makeText(getApplicationContext(), "At END!", Toast.LENGTH_LONG);
+        toast.show();
+    }
 }
