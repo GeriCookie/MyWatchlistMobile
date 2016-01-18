@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.example.cookie.mywatchlist.DBModels.LoggedUser;
 import com.example.cookie.mywatchlist.DBModels.User;
+import com.example.cookie.mywatchlist.Helpers.CurrentUser;
 import com.example.cookie.mywatchlist.Helpers.PracticeDatabaseHelper;
 import com.squareup.picasso.Picasso;
 
@@ -64,24 +65,13 @@ public class DetailMovieActivity extends AppCompatActivity {
         Picasso.with(this).load(movie.getLargePosterUrl()).
                 placeholder(R.drawable.large_movie_poster).
                 into(ivPosterImage);
-
     }
 
     public void addMovie(View view) {
         PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        LoggedUser loggedUser = null;
-
-        try {
-            loggedUser = cupboard().withDatabase(db).query(LoggedUser.class).get();
-        } catch (Exception e) {
-
-        }
-
-        if (loggedUser == null) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Asd", Toast.LENGTH_LONG);
-            toast.show();
+        if (CurrentUser.getId() == null) {
             Intent i = new Intent(this, LoginActivity.class);
             startActivity(i);
            return;

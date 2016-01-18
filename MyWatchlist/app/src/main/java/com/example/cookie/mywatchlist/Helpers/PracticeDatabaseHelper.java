@@ -10,7 +10,7 @@ import com.example.cookie.mywatchlist.DBModels.User;
 import static nl.qbusict.cupboard.CupboardFactory.cupboard;
 
 public class PracticeDatabaseHelper extends SQLiteOpenHelper {
-    private static final String DATABASE_NAME = "myWatchList.db";
+    private static final String DATABASE_NAME = "MyWatchList.db";
     private static final int DATABASE_VERSION = 1;
 
     public PracticeDatabaseHelper(Context context) {

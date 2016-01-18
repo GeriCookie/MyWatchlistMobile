@@ -40,7 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         User user = null;
 
         try {
-            user = cupboard().withDatabase(db).query(User.class).withSelection( "name = ? AND password = ?", username, password).get();
+            user = cupboard().withDatabase(db).query(User.class).withSelection("name = ? AND password = ?", username, password).get();
         } catch (Exception e) {
 
         }
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        //cacheUserId(user._id);
+        cacheUserId(user._id);
         startActivity(intent);
     }
 
@@ -79,26 +79,14 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        try {
-            Long id = cupboard().withDatabase(db).put(new User(username, password));
-            cacheUserId(id);
-        } catch (Exception e) {
-            Toast toast = Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG);
-            toast.show();
-        }
-
-
+        Long id = cupboard().withDatabase(db).put(new User(username, password));
+        cacheUserId(id);
 
         startActivity(intent);
     }
 
     public void cacheUserId(Long id) {
-        try {
-            cupboard().withDatabase(db).put(new LoggedUser(id));
-            CurrentUser.setId(id);
-        } catch (Exception e) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Cant cache!", Toast.LENGTH_LONG);
-            toast.show();
-        }
+        cupboard().withDatabase(db).put(new LoggedUser(id));
+        CurrentUser.setId(id);
     }
 }

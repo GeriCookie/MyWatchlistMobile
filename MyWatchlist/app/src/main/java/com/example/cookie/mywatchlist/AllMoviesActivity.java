@@ -2,6 +2,7 @@ package com.example.cookie.mywatchlist;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +17,8 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import android.widget.ListView;
 
+import com.example.cookie.mywatchlist.DBModels.LoggedUser;
+import com.example.cookie.mywatchlist.Helpers.CurrentUser;
 import com.example.cookie.mywatchlist.Helpers.PracticeDatabaseHelper;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -27,6 +30,8 @@ import org.apache.http.Header;
 
 import java.util.ArrayList;
 
+import static nl.qbusict.cupboard.CupboardFactory.cupboard;
+
 public class AllMoviesActivity extends Activity {
     private ListView lvMovies;
     private MoviesAdapter adapterMovies;
@@ -37,7 +42,9 @@ public class AllMoviesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_all_movies);
-        PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
+
+        LoadCachedUser();
+
         lvMovies = (ListView) findViewById(R.id.lvMovies);
         ArrayList<Movie> aMovies = new ArrayList<Movie>();
         adapterMovies = new MoviesAdapter(this, aMovies);
@@ -80,5 +87,21 @@ public class AllMoviesActivity extends Activity {
                 }
             }
         });
+    }
+
+    private void LoadCachedUser() {
+        PracticeDatabaseHelper dbHelper = new PracticeDatabaseHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        LoggedUser loggedUser = null;
+
+        try {
+             loggedUser = cupboard().withDatabase(db).query(LoggedUser.class).get();
+        } catch (Exception e) {
+
+        }
+
+        if (loggedUser != null) {
+            CurrentUser.setId(loggedUser._id);
+        }
     }
 }
